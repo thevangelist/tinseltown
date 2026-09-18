@@ -30,11 +30,11 @@ uniform float uTime, uFrame;
 uniform vec3 uLight, uLightU, uLightV, uAxis;
 uniform vec2 uCone;
 uniform float uWallNorm, uDistance2;
-uniform int uLayers, uEdge, uSamples, uShape, uSurface, uDirect, uInvert;
+uniform int uLayers, uEdge, uSamples, uShape, uDirect, uInvert;
 uniform vec3 uC[${MAX_LAYERS}], uN[${MAX_LAYERS}], uU[${MAX_LAYERS}], uV[${MAX_LAYERS}];
 uniform sampler2D uCookie;
 uniform vec3 uWall, uLightColor;
-uniform float uAmbient, uHaze, uHazeDepth, uThreshold, uBlur, uRelief;
+uniform float uAmbient, uHaze, uHazeDepth, uThreshold, uBlur;
 out vec4 outColor;
 
 const float GOLDEN_ANGLE = 2.39996323;
@@ -57,13 +57,6 @@ float noise(vec3 x) {
 }
 
 float smoke(vec3 p) { return 0.57 * noise(p) + 0.29 * noise(p * 2.1) + 0.14 * noise(p * 4.3); }
-
-// Height of the wall surface: 1 plaster, 2 linen, 3 concrete.
-float height(vec2 q) {
-  if (uSurface == 1) return smoke(vec3(q * 7.0, 0.0)) + 0.3 * noise(vec3(q * 70.0, 1.0));
-  if (uSurface == 2) return 0.5 * sin(q.x * 380.0) * cos(q.y * 380.0) + 0.4 * noise(vec3(q * 24.0, 2.0));
-  return 0.7 * noise(vec3(q * 150.0, 3.0)) + smoke(vec3(q * 3.0, 4.0));
-}
 
 // Premultiplied texels make 1 - a + rgb equal to 1 - a * (1 - straight rgb), and keep it filterable.
 // Per channel, so a colour slide tints the light the way a gel or stained glass does.
@@ -124,21 +117,12 @@ void main() {
   float n = float(uSamples);
   vec3 l;
 
-  vec3 normal = vec3(0.0, 0.0, 1.0);
-  float grain = 1.0;
-  if (uSurface > 0) {
-    const float E = 0.002;
-    float h = height(q);
-    normal = normalize(vec3((h - vec2(height(q + vec2(E, 0.0)), height(q + vec2(0.0, E)))) * uRelief * 0.06 / E, 1.0));
-    grain = 1.0 - 0.3 * uRelief * (1.0 - h);
-  }
-
   // Most pixels see all of the lamp or none of it. A few probes spread over the lamp find those, and only the
   // penumbra pays for every sample.
   vec3 wall = vec3(0.0), t, lo = vec3(1.0), hi = vec3(0.0);
   for (int i = 0; i < PROBES; i++) {
     float b = beam(vec3(q, 0.0), lightSample((float(i) + 0.5) * n / float(PROBES), n, j), l, t);
-    wall += t * b * max(dot(l, normal), 0.0);
+    wall += t * b * max(l.z, 0.0);
     lo = min(lo, t);
     hi = max(hi, t);
   }
@@ -149,7 +133,7 @@ void main() {
     wall = vec3(0.0);
     for (int i = 0; i < uSamples; i++) {
       float b = beam(vec3(q, 0.0), lightSample(float(i), n, j), l, t);
-      wall += t * b * max(dot(l, normal), 0.0);
+      wall += t * b * max(l.z, 0.0);
     }
     wall *= uWallNorm / n;
   }
@@ -165,6 +149,6 @@ void main() {
     scatter *= 0.1 * uHaze * uDistance2 * uHazeDepth / float(HAZE_STEPS);
   }
 
-  vec3 c = uWall * grain * (uAmbient + uLightColor * wall) + uLightColor * scatter;
+  vec3 c = uWall * (uAmbient + uLightColor * wall) + uLightColor * scatter;
   outColor = vec4(uDirect == 1 ? finish(c, gl_FragCoord.xy) : c, 1.0);
 }`

@@ -53,7 +53,7 @@ Tests cover the maths, not the picture. Render it:
 The GitHub social preview, `docs/social.png`, is a render of `demo/social.html`. Use the same command with
 `--window-size=1280,640 --force-device-scale-factor=2` on `/demo/social.html`, then scale it down with
 `sips -z 640 1280`. Every query parameter becomes an attribute of the backdrop, so
-`/demo/social.html?preset=leaves&surface=plaster` renders a card for any look. Add `bare` to drop the logo and the line, and
+`/demo/social.html?preset=leaves&haze=0.3` renders a card for any look. Add `bare` to drop the logo and the line, and
 `width` and `height` to size the card.
 
 ## Not tested yet

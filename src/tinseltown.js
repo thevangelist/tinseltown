@@ -342,8 +342,6 @@ export class TinseltownBackdrop extends (globalThis.HTMLElement ?? class {}) {
     gl.uniform1f(this.#uniform('uFrame'), this.#refined)
     gl.uniform1i(this.#uniform('uDirect'), accumulate ? 0 : 1)
     gl.uniform1i(this.#uniform('uShape'), SCHEMA.lightShape.values.indexOf(o.lightShape))
-    gl.uniform1i(this.#uniform('uSurface'), SCHEMA.surface.values.indexOf(o.surface))
-    gl.uniform1f(this.#uniform('uRelief'), o.relief)
     gl.uniform1i(this.#uniform('uInvert'), o.invert ? 1 : 0)
     gl.uniform3fv(this.#uniform('uLight'), r.light)
     gl.uniform3fv(this.#uniform('uLightU'), r.lightU)

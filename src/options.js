@@ -27,9 +27,6 @@ export const SCHEMA = {
   intensity: { default: 2.2, min: 0, max: 100 },
   ambient: { default: 0.1, min: 0, max: 10 },
   wall: { default: '#3a3835' },
-  // The index of each value is the uSurface code in the shader.
-  surface: { default: 'none', values: ['none', 'plaster', 'linen', 'concrete'] },
-  relief: { default: 0.5, min: 0, max: 1 },
   haze: { default: 0, min: 0, max: 4 },
   motion: { default: '', tokens: ['sway', 'drift', 'spin', 'breathe', 'flicker'] },
   speed: { default: 1, min: 0, max: 20 },

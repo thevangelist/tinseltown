@@ -1,13 +1,6 @@
 # Changelog
 
-## 0.2.0, 2026-09-18
-
-### Added
-
-- Colour cookies. Transmission is per channel, so a slide, a gel or a photo tints the light instead of only dimming it.
-- A cookie that is not a preset repeats mirrored, so a photo covers any frame without a visible seam.
-- Demo: an Examples section, a distraction-free mode on the H key, link previews, a web manifest, icons and
-  structured data.
+## 0.3.0, 2026-09-18
 
 ### Fixed
 
@@ -16,6 +9,20 @@
 - A laptop on a low battery went dark on opening the demo. The element asked for the high-performance GPU, which
   switches on the discrete card on dual-GPU laptops. It now takes the default GPU, renders at up to 1.5 device pixels
   instead of 2, and goes quiet on a draining battery below 30 percent: half scale, 16 samples, no motion.
+
+### Removed
+
+- `surface` and `relief`. The plaster, linen and concrete walls did not look good enough to keep. A set attribute is
+  ignored, so pages that used them keep working with a smooth wall.
+
+## 0.2.0, 2026-09-18
+
+### Added
+
+- Colour cookies. Transmission is per channel, so a slide, a gel or a photo tints the light instead of only dimming it.
+- A cookie that is not a preset repeats mirrored, so a photo covers any frame without a visible seam.
+- Demo: an Examples section, a distraction-free mode on the H key, link previews, a web manifest, icons and
+  structured data.
 
 ### Changed
 
@@ -35,8 +42,7 @@
 - `cookie-blur` and `threshold`, so a noisy phone photo of a cut-out becomes a clean mask.
 - `layers`: up to three copies of the cookie at increasing depth. One sharp layer and one soft layer read as depth.
 - `haze`: a drifting smoke volume that makes the beams visible.
-- `light-shape`, `light-color` and `light-distance` on the lamp. `surface` and `relief` on the wall: plaster, linen
-  or concrete, lit by the lamp so the texture rakes with the light.
+- `light-shape`, `light-color` and `light-distance` on the lamp.
 - Adaptive sampling. Twelve probes find the pixels that see all of the lamp or none of it, so only the penumbra pays
   for every sample. A governor drops the render scale in steps when frames run long, and phones start a step down.
 - Progressive refinement. A still rig averages 24 frames of fresh sample patterns in a float target, so the grain

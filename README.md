@@ -128,7 +128,6 @@ Distances and sizes use the same unit.
 | `color-temp` `intensity` `ambient` | `3200` `2.2` `0.1` | Kelvin, key level, fill level. Contrast is key against fill. |
 | `light-color` | | A gel. Any CSS colour. Replaces `color-temp`. |
 | `wall` | `#3a3835` | Wall colour. Any CSS colour. |
-| `surface` `relief` | `none` `0.5` | `plaster`, `linen` or `concrete`. The relief is lit by the lamp, so it rakes with it. |
 | `haze` | `0` | Smoke in the room, from 0 to 1. |
 | `motion` `speed` | | Any of `sway` `drift` `spin` `breathe` `flicker`, space separated. |
 | `samples` `resolution` | `48` `1` | Paths per pixel and render scale. Quality against GPU time. |

@@ -27,8 +27,6 @@ const COLUMNS = [
     { option: 'invert', label: 'Invert', boolean: true },
   ]], ['Wall', [
     { option: 'wall', label: 'Colour', color: true },
-    { option: 'surface', label: 'Surface', choices: [['Smooth', 'none'], ['Plaster', 'plaster'], ['Linen', 'linen'], ['Concrete', 'concrete']] },
-    { option: 'relief', label: 'Relief', min: 0, max: 1, step: 0.05 },
   ]]],
 ]
 const ROWS = COLUMNS.flat().flatMap(([, rows]) => rows)
