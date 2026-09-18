@@ -38,7 +38,7 @@
 
   <header class="nav">
     <a class="wordmark" href="#top" aria-label="Tinseltown"></a>
-    <nav>
+    <nav id="sections">
       <a href="#rig">The rig</a>
       <a href="#cookie">Your cookie</a>
       <a href="#how">How it works</a>
@@ -46,6 +46,8 @@
       <a href="#usage">Usage</a>
     </nav>
     <div class="nav-actions">
+      <button class="icon-link stroke burger" id="menu" type="button" aria-expanded="false" aria-controls="sections" aria-label="Menu">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25h16.5"/></svg></button>
       <button class="icon-link stroke" id="focus" type="button" aria-pressed="false" aria-label="Hide the interface" title="Hide the interface (H)">
         <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M2.036 12.322a1.012 1.012 0 0 1 0-.639C3.423 7.51 7.36 4.5 12 4.5c4.638 0 8.573 3.007 9.963 7.178.07.207.07.431 0 .639C20.577 16.49 16.64 19.5 12 19.5c-4.638 0-8.573-3.007-9.963-7.178Z"/><path d="M15 12a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z"/></svg></button>
       <a class="icon-link" href="https://github.com/thevangelist/tinseltown" aria-label="Tinseltown on GitHub">
@@ -103,15 +105,9 @@
 
     <section id="examples">
       <h2>Examples</h2>
-      <div class="gallery">
-        <div><tinseltown-backdrop preset="bars" elevation="28" haze="0.3"></tinseltown-backdrop></div>
-        <div><tinseltown-backdrop preset="arched-window" haze="0.35"></tinseltown-backdrop></div>
-        <div><tinseltown-backdrop preset="leaves" light-color="#a9c1ff" surface="plaster"></tinseltown-backdrop></div>
-      </div>
       <img class="sheet" src="docs/examples.jpg" width="2448" height="1860" loading="lazy"
         alt="Twelve renders: blinds, french doors, a photo used as a colour slide, a fence, halftone, an iris, clouds, leaves, palm fronds and a passing train">
-      <small>The three on top are live. The twelve below are renders: eleven presets under different rigs, and one photo used
-        as the cookie. Photo by Mikhail Nilov on Pexels.</small>
+      <small>Eleven presets under different rigs, and one photo used as the cookie. Photo by Mikhail Nilov on Pexels.</small>
     </section>
 
     <section id="usage" class="usage">

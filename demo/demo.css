@@ -99,6 +99,7 @@ code { font-family: var(--mono); font-size: 0.9em; }
 }
 .icon-link:hover { color: var(--text); }
 .icon-link svg { width: 24px; height: 24px; fill: currentColor; }
+.burger { display: none; }
 .icon-link.stroke svg { fill: none; stroke: currentColor; stroke-width: 1.5; }
 
 /* The logo is a mask so its colour stays a token. The slight blur softens its edges like projected light. */
@@ -158,8 +159,8 @@ section { max-width: 1200px; margin: 0 auto; padding: var(--space-9) var(--space
 .facts dd { margin: 0; }
 .steps { margin: 0; padding-left: var(--space-5); display: grid; gap: var(--space-3); color: var(--text-dim); }
 
-/* The one well. Every boxed surface on the page is this and nothing else. */
-.well {
+/* The one well. Every boxed surface on the page is this and nothing else, the open phone menu included. */
+.well, .nav.open nav {
   margin: 0; padding: var(--space-5); border-radius: var(--radius-lg); border: var(--border) solid var(--line);
   background: var(--surface); backdrop-filter: blur(12px); box-shadow: 0 10px 48px -16px #000;
 }
@@ -205,11 +206,7 @@ input[type='range']::-moz-range-thumb { width: 14px; height: 14px; border-radius
 .drop.over { outline: var(--border) solid var(--accent); outline-offset: var(--space-3); }
 .drop small { display: block; color: var(--text-muted); line-height: 1.5; }
 
-/* Bare renders, nothing on top. */
-.gallery { display: grid; grid-template-columns: repeat(3, 1fr); gap: var(--space-5); }
-.gallery div { position: relative; isolation: isolate; aspect-ratio: 3 / 2; overflow: hidden; border-radius: var(--radius-lg); border: var(--border) solid var(--line); }
-
-.sheet { display: block; width: 100%; height: auto; margin: var(--space-5) 0 var(--space-4); border-radius: var(--radius-lg); border: var(--border) solid var(--line); }
+.sheet { display: block; width: 100%; height: auto; margin: 0 0 var(--space-4); border-radius: var(--radius-lg); border: var(--border) solid var(--line); }
 #examples small { display: block; color: var(--text-muted); }
 
 .usage { text-align: center; }
@@ -225,9 +222,12 @@ footer p { margin: var(--space-1) 0 0; }
 
 @media (max-width: 1000px) {
   .nav { padding: var(--space-3) var(--space-4); grid-template-columns: 1fr auto; }
-  .nav nav { display: none; }
+  .burger { display: grid; }
+  .blob { display: none; }
+  .nav nav { display: none; position: absolute; top: 100%; left: var(--space-4); right: var(--space-4); flex-direction: column; gap: 0; }
+  .nav.open nav { display: flex; padding-block: var(--space-3); }
   section { padding: var(--space-8) var(--space-4); }
-  .split, .hero, .controls, .gallery { grid-template-columns: 1fr; gap: var(--space-6); }
+  .split, .hero, .controls { grid-template-columns: 1fr; gap: var(--space-6); }
   footer > div { grid-template-columns: 1fr 1fr; }
   /* Randomize leads on a phone: it is the fastest way to see what the rig can do. */
   rig-controls .well { display: grid; }

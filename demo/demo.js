@@ -39,6 +39,21 @@ addEventListener('keydown', event => {
   if (event.key === 'h' || event.key === 'H') setFocus(!document.body.classList.contains('focus'))
 })
 
+// The phone menu: the burger opens the section links in a well. A pick, Esc or a tap elsewhere closes it.
+const bar = document.querySelector('.nav')
+const burger = document.querySelector('#menu')
+function setMenu(open) {
+  bar.classList.toggle('open', open)
+  burger.setAttribute('aria-expanded', open)
+}
+burger.addEventListener('click', () => setMenu(!bar.classList.contains('open')))
+addEventListener('click', event => {
+  if (!event.target.closest('#menu')) setMenu(false)
+})
+addEventListener('keydown', event => {
+  if (event.key === 'Escape') setMenu(false)
+})
+
 // The glow follows the pointer along the menu and rests on the section in the middle of the screen.
 const menu = document.querySelector('.nav nav')
 const blob = menu.appendChild(Object.assign(document.createElement('span'), { className: 'blob' }))
