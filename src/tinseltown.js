@@ -13,10 +13,25 @@ const SLOW_FRAME_MS = 24
 const SLOW_FRAMES = 6
 const QUALITY_STEP = 0.25
 const QUALITY_FLOOR = 0.5
+// After a change the old picture fades into the new one over a few frames, so the grain of a single frame never pops.
+const FADE_FRAMES = 6
+const FADE_ALPHA = 0.4
+// On a draining battery the rig goes quiet: a small, still picture from few samples. A laptop has died of less.
+const ECO_BATTERY_LEVEL = 0.3
+const ECO_SAMPLES = 16
+const ECO_REFINE_FRAMES = 6
 const VIDEO = /\.(mp4|webm|mov|m4v)(\?|#|$)/i
 const kebab = key => key.replace(/[A-Z]/g, c => `-${c.toLowerCase()}`)
 const reducedMotion = globalThis.matchMedia?.('(prefers-reduced-motion: reduce)')
 const coarsePointer = globalThis.matchMedia?.('(pointer: coarse)')
+
+let eco = false
+globalThis.navigator?.getBattery?.().then(battery => {
+  const update = () => (eco = !battery.charging && battery.level <= ECO_BATTERY_LEVEL)
+  update()
+  battery.addEventListener('levelchange', update)
+  battery.addEventListener('chargingchange', update)
+}).catch(() => {})
 
 const STYLE = `<style>
 :host { position: absolute; inset: 0; z-index: -1; display: block; pointer-events: none; background: #1c1a17; }
@@ -68,6 +83,8 @@ export class TinseltownBackdrop extends (globalThis.HTMLElement ?? class {}) {
   #locations = new Map()
   #accum = {}
   #refined = 0
+  #history = false
+  #fading = false
   #quality = 1
   #slow = 0
   #last = 0
@@ -96,7 +113,8 @@ export class TinseltownBackdrop extends (globalThis.HTMLElement ?? class {}) {
     this.#canvas = root.querySelector('canvas')
     this.#canvas.addEventListener('webglcontextlost', this.#onContextLost)
     this.#canvas.addEventListener('webglcontextrestored', this.#onContextRestored)
-    this.#gl = this.#canvas.getContext('webgl2', { antialias: false, powerPreference: 'high-performance' })
+    // The default GPU, never a forced discrete one: a backdrop must not be the reason a laptop switches graphics.
+    this.#gl = this.#canvas.getContext('webgl2', { antialias: false, powerPreference: 'default' })
     if (!this.#gl || !this.#setup()) {
       this.#gl = null
       return
@@ -289,9 +307,9 @@ export class TinseltownBackdrop extends (globalThis.HTMLElement ?? class {}) {
     this.#chained = false
 
     const o = this.options
-    const still = reducedMotion.matches
+    const still = reducedMotion.matches || eco
     const time = still ? 0 : now / 1000
-    const scale = Math.min(devicePixelRatio, 2) * o.resolution * this.#quality
+    const scale = Math.min(devicePixelRatio, 1.5) * o.resolution * (eco ? QUALITY_FLOOR : this.#quality)
     const width = Math.min(Math.round(this.clientWidth * scale), MAX_CANVAS_SIZE)
     const height = Math.min(Math.round(this.clientHeight * scale), MAX_CANVAS_SIZE)
     if (!width || !height) return
@@ -300,13 +318,19 @@ export class TinseltownBackdrop extends (globalThis.HTMLElement ?? class {}) {
     if (this.#live) this.#upload()
 
     const animated = !still && (this.#live || o.motion || o.haze > 0)
-    if (animated || this.#canvas.width !== this.#accum.width || this.#canvas.height !== this.#accum.height) this.#refined = 0
+    const resized = this.#canvas.width !== this.#accum.width || this.#canvas.height !== this.#accum.height
+    if (animated || resized) this.#refined = 0
+    if (animated || resized) this.#history = false
     const accumulate = this.#sizeAccum(width, height)
     gl.useProgram(this.#trace)
     gl.bindFramebuffer(gl.FRAMEBUFFER, accumulate ? this.#accum.target : null)
     if (accumulate) {
       gl.enable(gl.BLEND)
-      gl.blendColor(0, 0, 0, 1 / (this.#refined + 1))
+      // A running mean, except right after a change: then the old picture is history to fade out, not to keep.
+      // The fade leaves about four frames' worth of the new picture, so the mean carries on from there.
+      if (this.#refined === 0) this.#fading = this.#history
+      const k = this.#refined
+      gl.blendColor(0, 0, 0, !this.#fading ? 1 / (k + 1) : k < FADE_FRAMES ? FADE_ALPHA : 1 / (k - 2))
       gl.blendFunc(gl.CONSTANT_ALPHA, gl.ONE_MINUS_CONSTANT_ALPHA)
     }
 
@@ -330,7 +354,7 @@ export class TinseltownBackdrop extends (globalThis.HTMLElement ?? class {}) {
     gl.uniform1f(this.#uniform('uDistance2'), r.distance2)
     gl.uniform1i(this.#uniform('uLayers'), o.layers)
     gl.uniform1i(this.#uniform('uEdge'), SCHEMA.edge.values.indexOf(o.edge))
-    gl.uniform1i(this.#uniform('uSamples'), o.samples)
+    gl.uniform1i(this.#uniform('uSamples'), eco ? Math.min(o.samples, ECO_SAMPLES) : o.samples)
     gl.uniform3fv(this.#uniform('uC'), flat('c'))
     gl.uniform3fv(this.#uniform('uN'), flat('n'))
     gl.uniform3fv(this.#uniform('uU'), flat('u'))
@@ -352,8 +376,9 @@ export class TinseltownBackdrop extends (globalThis.HTMLElement ?? class {}) {
       gl.uniform1i(this.#uniform('uAccum', this.#resolve), 1)
       gl.drawArrays(gl.TRIANGLES, 0, 3)
       this.#refined++
+      this.#history = true
     }
-    if (animated || (accumulate && this.#refined < REFINE_FRAMES)) {
+    if (animated || (accumulate && this.#refined < (eco ? ECO_REFINE_FRAMES : REFINE_FRAMES))) {
       this.#chained = true
       this.#schedule()
     }

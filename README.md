@@ -156,7 +156,8 @@ costs nothing. Animated rigs stop when offscreen. Under
 
 - WebGL2 only. Without it the element shows a flat dark background.
 - Tuned on Apple Silicon. A governor lowers the render scale when frames run long, and phones start a step down.
-  Lower `samples` and `resolution` yourself for a heavy page.
+  On a draining battery below 30 percent the rig renders small and holds still. That needs the Battery Status API,
+  which only Chromium browsers have. Lower `samples` and `resolution` yourself for a heavy page.
 - One cookie image per element. Layers reuse it at different depths.
 - Tested in Chrome. Safari and Firefox are untested.
 

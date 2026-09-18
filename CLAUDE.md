@@ -28,6 +28,9 @@ wall in one WebGL2 fragment shader. Plain ES modules. No build step. No runtime 
   The resolve program tone-maps it to the canvas. Without float targets `uDirect` makes the trace do both.
 - Adaptive sampling in the trace shader: `PROBES` spread over the lamp decide whether the full loop runs. The governor
   in `#render` lowers `#quality` when chained frames exceed `SLOW_FRAME_MS`. It never raises it again, to avoid pumping.
+- Power: the context takes the default GPU, never `high-performance`. `eco` follows the Battery Status API and
+  makes the rig small, still and cheap. A change fades the old picture out (`FADE_FRAMES`) instead of restarting from
+  one raw frame.
 - Rendering is on demand. `#invalidate()` schedules one frame. `#render` reschedules only when the rig is animated,
   visible and reduced motion is off.
 

@@ -9,6 +9,14 @@
 - Demo: an Examples section, a distraction-free mode on the H key, link previews, a web manifest, icons and
   structured data.
 
+### Fixed
+
+- Changing an option made the picture flicker for a frame. Every change threw away the refined picture and showed one
+  raw, grainy frame. The old picture now fades into the new one over six frames.
+- A laptop on a low battery went dark on opening the demo. The element asked for the high-performance GPU, which
+  switches on the discrete card on dual-GPU laptops. It now takes the default GPU, renders at up to 1.5 device pixels
+  instead of 2, and goes quiet on a draining battery below 30 percent: half scale, 16 samples, no motion.
+
 ### Changed
 
 - A coloured cookie used to count by its brightness alone. It now tints the light. Black and alpha cookies look the same.
