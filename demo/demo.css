@@ -129,7 +129,8 @@ code { font-family: var(--mono); font-size: 0.9em; }
 header, main, footer { transition: opacity 0.4s; }
 .focus header, .focus main, .focus footer { opacity: 0; pointer-events: none; }
 .focus { overflow: hidden; }
-.focus-exit { position: fixed; right: var(--space-5); bottom: var(--space-5); z-index: 2; gap: var(--space-2); background: var(--surface); backdrop-filter: blur(12px); opacity: 0; pointer-events: none; transition: opacity 0.4s; }
+/* Sits where the eye was pressed, so the way back is under the same finger. */
+.focus-exit { position: fixed; top: var(--space-4); right: var(--space-7); z-index: 2; gap: var(--space-2); background: var(--surface); backdrop-filter: blur(12px); opacity: 0; pointer-events: none; transition: opacity 0.4s; }
 .focus .focus-exit { opacity: 0.55; pointer-events: auto; }
 .focus .focus-exit:hover, .focus .focus-exit:focus-visible { opacity: 1; }
 kbd { padding: 2px 6px; border: 1px solid var(--line); border-radius: 4px; font: var(--step--1) var(--mono); }
@@ -223,6 +224,7 @@ footer p { margin: var(--space-1) 0 0; }
 @media (max-width: 1000px) {
   .nav { padding: var(--space-3) var(--space-4); grid-template-columns: 1fr auto; }
   .burger { display: grid; }
+  .focus-exit { top: var(--space-3); right: var(--space-4); }
   .blob { display: none; }
   .nav nav { display: none; position: absolute; top: 100%; left: var(--space-4); right: var(--space-4); flex-direction: column; gap: 0; }
   .nav.open nav { display: flex; padding-block: var(--space-3); }
