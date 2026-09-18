@@ -159,6 +159,9 @@ section { max-width: 1200px; margin: 0 auto; padding: var(--space-9) var(--space
 .facts { display: grid; grid-template-columns: auto 1fr; gap: var(--space-3) var(--space-5); margin: 0; color: var(--text-dim); }
 .facts dt { font-weight: 600; color: var(--text); }
 .facts dd { margin: 0; }
+/* Long terms stack above their text instead of sharing a row. */
+.facts.stacked { grid-template-columns: 1fr; gap: var(--space-1); }
+.facts.stacked dd { margin-bottom: var(--space-4); }
 .steps { margin: 0; padding-left: var(--space-5); display: grid; gap: var(--space-3); color: var(--text-dim); }
 
 /* The one well. Every boxed surface on the page is this and nothing else, the open phone menu included. */

@@ -10,11 +10,30 @@ Hollywood lighting for your website. One HTML tag.
 
 **[Live demo](https://thevangelist.github.io/tinseltown/)**
 
-The web fakes window light with blurred PNGs and looped videos. Tinseltown builds the rig instead: a lamp, a cookie
-and a wall, traced on the GPU for every pixel. A cookie, short for cucoloris, is the cut-out a grip puts in front of a
-lamp. No dependencies, no build step.
+Film crews put a cut-out called a cookie in front of the lamp, and flat light gets life, pattern and texture.
+Tinseltown does that for a flat web page. A good background does not have to be hard to make.
+
+## What you get
+
+- **A page that looks like a place.** Most sites sit on the same gradient. Light through blinds, leaves or a window
+  gives yours a room to stand in.
+- **No stock overlays and no hero video.** The whole thing is under 20 kB. A hero video is megabytes, and every
+  visitor on mobile data pays for it.
+- **A new mood without a designer.** One attribute moves the sun, warms the light or fills the room with smoke.
+  A campaign, a season or a dark theme is one line of HTML.
+- **It fits the site you have.** It works anywhere you can paste HTML. No framework, no build step, no dependencies.
+- **Safe to ship.** It holds still for visitors who ask for less motion, stays out of screen readers, tracks nobody and
+  is MIT licensed.
+
+## Examples
+
+![Twelve renders: blinds, french doors, a photo used as a colour slide, a fence, halftone, an iris, clouds, leaves, palm fronds and a passing train](docs/examples.jpg)
+
+Eleven presets under different rigs, and one photo used as the cookie. Photo by Mikhail Nilov on Pexels.
 
 ## Install
+
+From here on, this page is for the person who adds it to the site.
 
 Without installing anything:
 
@@ -158,12 +177,6 @@ Each of these takes a grip truck on set. Here each is a change to one shader. No
 - **Shadow puppets and Lotte Reiniger silhouettes**: articulated cookies, close to the wall.
 - **Dust motes and god rays**: particles in the haze volume.
 - **Time of day**: bind elevation, azimuth and colour temperature to scroll or to the visitor's clock.
-
-## Examples
-
-![Twelve renders: blinds, french doors, a photo used as a colour slide, a fence, halftone, an iris, clouds, leaves, palm fronds and a passing train](docs/examples.jpg)
-
-Eleven presets under different rigs, and one photo used as the cookie. Photo by Mikhail Nilov on Pexels.
 
 ## Develop
 
