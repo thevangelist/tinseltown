@@ -29,9 +29,9 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Instrument+Sans:ital,wght@0,400..700;1,400..700&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="demo/demo.css">
-  <script type="module" src="src/tinseltown.js"></script>
-  <script type="module" src="demo/demo.js"></script>
+  <link rel="stylesheet" href="demo/demo.css?v=__BUILD__">
+  <script type="module" src="src/tinseltown.js?v=__BUILD__"></script>
+  <script type="module" src="demo/demo.js?v=__BUILD__"></script>
 </head>
 <body id="top">
   <tinseltown-backdrop id="backdrop" preset="blinds-horizontal" wall="#34322e" style="position: fixed"></tinseltown-backdrop>
@@ -46,12 +46,12 @@
       <a href="#usage">Usage</a>
     </nav>
     <div class="nav-actions">
-      <button class="icon-link stroke burger" id="menu" type="button" aria-expanded="false" aria-controls="sections" aria-label="Menu">
-        <svg viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25h16.5"/></svg></button>
       <button class="icon-link stroke" id="focus" type="button" aria-pressed="false" aria-label="Hide the interface" title="Hide the interface (H)">
         <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M2.036 12.322a1.012 1.012 0 0 1 0-.639C3.423 7.51 7.36 4.5 12 4.5c4.638 0 8.573 3.007 9.963 7.178.07.207.07.431 0 .639C20.577 16.49 16.64 19.5 12 19.5c-4.638 0-8.573-3.007-9.963-7.178Z"/><path d="M15 12a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z"/></svg></button>
       <a class="icon-link" href="https://github.com/thevangelist/tinseltown" aria-label="Tinseltown on GitHub">
         <svg viewBox="0 0 16 16" aria-hidden="true"><path d="M8 0c4.42 0 8 3.58 8 8a8.013 8.013 0 0 1-5.45 7.59c-.4.08-.55-.17-.55-.38 0-.27.01-1.13.01-2.2 0-.75-.25-1.23-.54-1.48 1.78-.2 3.65-.88 3.65-3.95 0-.88-.31-1.59-.82-2.15.08-.2.36-1.02-.08-2.12 0 0-.67-.22-2.2.82-.64-.18-1.32-.27-2-.27-.68 0-1.36.09-2 .27-1.53-1.03-2.2-.82-2.2-.82-.44 1.1-.16 1.92-.08 2.12-.51.56-.82 1.28-.82 2.15 0 3.06 1.86 3.75 3.64 3.95-.23.2-.44.55-.51 1.07-.46.21-1.61.55-2.33-.66-.15-.24-.6-.83-1.23-.82-.67.01-.27.38.01.53.34.19.73.9.82 1.13.16.45.68 1.31 2.69.94 0 .67.01 1.3.01 1.49 0 .21-.15.45-.55.38A7.995 7.995 0 0 1 0 8c0-4.42 3.58-8 8-8Z"/></svg></a>
+      <button class="icon-link stroke burger" id="menu" type="button" aria-expanded="false" aria-controls="sections" aria-label="Menu">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25h16.5"/></svg></button>
     </div>
   </header>
 
@@ -116,8 +116,9 @@
     <section id="usage" class="usage">
       <h2>Copy the tag. Ship the light.</h2>
       <p>No dependencies. No build step. A still scene costs nothing once it has settled.</p>
-      <pre class="well"><code id="snippet"></code></pre>
-      <p><b>Paste both into your page. Or run <code>npm install tinseltown</code>.</b></p>
+      <div class="snippet"><pre class="well"><code id="snippet"></code></pre><copy-button for="snippet"></copy-button></div>
+      <p><b>Paste both into your page. Or install it.</b></p>
+      <div class="well field"><code id="install">npm install tinseltown</code><copy-button for="install" label="Copy"></copy-button></div>
     </section>
   </main>
 

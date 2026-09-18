@@ -56,8 +56,9 @@
 }
 
 * { box-sizing: border-box; }
-html { background: var(--ink); }
-body { margin: 0; font: var(--step-0) / 1.5 var(--sans); color: var(--text); isolation: isolate; }
+/* A phone never pans sideways and never double-tap zooms. Pinch zoom stays, for people who need larger type. */
+html { background: var(--ink); overflow-x: clip; -webkit-text-size-adjust: 100%; text-size-adjust: 100%; touch-action: pan-y pinch-zoom; }
+body { margin: 0; overflow-x: clip; font: var(--step-0) / 1.5 var(--sans); color: var(--text); isolation: isolate; }
 a { color: inherit; }
 button, input, select { font: inherit; }
 h1, h2, h3 { margin: 0; font-weight: 400; text-wrap: balance; }
@@ -77,7 +78,7 @@ code { font-family: var(--mono); font-size: 0.9em; }
 /* Blurs what scrolls under the bar, fading out downwards so the bar has no hard edge. */
 .nav::before {
   content: ''; position: absolute; inset: 0 0 -24px; z-index: -1; pointer-events: none;
-  background: linear-gradient(#000d, #0000); backdrop-filter: blur(14px);
+  background: linear-gradient(#000d, #0000); -webkit-backdrop-filter: blur(14px); backdrop-filter: blur(14px);
   -webkit-mask: linear-gradient(#000 55%, #0000); mask: linear-gradient(#000 55%, #0000);
 }
 .nav nav { position: relative; isolation: isolate; display: flex; gap: var(--space-7); }
@@ -104,7 +105,7 @@ code { font-family: var(--mono); font-size: 0.9em; }
 
 /* The logo is a mask so its colour stays a token. The slight blur softens its edges like projected light. */
 .wordmark {
-  display: block; width: 178px; aspect-ratio: 488.7 / 84.4; background: var(--accent); filter: blur(0.35px);
+  display: block; width: clamp(120px, 40vw, 178px); aspect-ratio: 488.7 / 84.4; background: var(--accent); filter: blur(0.35px);
   -webkit-mask: url(logo.svg) center / contain no-repeat; mask: url(logo.svg) center / contain no-repeat;
 }
 
@@ -130,7 +131,7 @@ header, main, footer { transition: opacity 0.4s; }
 .focus header, .focus main, .focus footer { opacity: 0; pointer-events: none; }
 .focus { overflow: hidden; }
 /* Sits where the eye was pressed, so the way back is under the same finger. */
-.focus-exit { position: fixed; top: var(--space-4); right: var(--space-7); z-index: 2; gap: var(--space-2); background: var(--surface); backdrop-filter: blur(12px); opacity: 0; pointer-events: none; transition: opacity 0.4s; }
+.focus-exit { position: fixed; top: var(--space-4); right: var(--space-7); z-index: 2; gap: var(--space-2); background: var(--surface); -webkit-backdrop-filter: blur(12px); backdrop-filter: blur(12px); opacity: 0; pointer-events: none; transition: opacity 0.4s; }
 .focus .focus-exit { opacity: 0.55; pointer-events: auto; }
 .focus .focus-exit:hover, .focus .focus-exit:focus-visible { opacity: 1; }
 kbd { padding: 2px 6px; border: 1px solid var(--line); border-radius: 4px; font: var(--step--1) var(--mono); }
@@ -146,7 +147,7 @@ section { max-width: 1200px; margin: 0 auto; padding: var(--space-9) var(--space
 .chips { display: flex; flex-wrap: wrap; gap: var(--space-2); margin-top: var(--space-6); }
 .chips button {
   height: var(--control-sm); padding: 0 var(--space-4); border: var(--border) solid var(--line); border-radius: var(--radius-pill);
-  background: var(--surface); backdrop-filter: blur(8px); color: var(--text-dim);
+  background: var(--surface); -webkit-backdrop-filter: blur(8px); backdrop-filter: blur(8px); color: var(--text-dim);
   font-size: var(--step--1); font-weight: 500; line-height: 1; cursor: pointer; transition: color 0.2s, border-color 0.2s;
 }
 .chips button:hover { color: var(--text); border-color: var(--button-outline); }
@@ -163,7 +164,7 @@ section { max-width: 1200px; margin: 0 auto; padding: var(--space-9) var(--space
 /* The one well. Every boxed surface on the page is this and nothing else, the open phone menu included. */
 .well, .nav.open nav {
   margin: 0; padding: var(--space-5); border-radius: var(--radius-lg); border: var(--border) solid var(--line);
-  background: var(--surface); backdrop-filter: blur(12px); box-shadow: 0 10px 48px -16px #000;
+  background: var(--surface); -webkit-backdrop-filter: blur(12px); backdrop-filter: blur(12px); box-shadow: 0 10px 48px -16px #000;
 }
 .well hr { margin: var(--space-5) calc(-1 * var(--space-5)); border: 0; border-top: var(--border) solid var(--line); }
 .well h3 { margin-bottom: var(--space-2); }
@@ -182,8 +183,11 @@ section { max-width: 1200px; margin: 0 auto; padding: var(--space-9) var(--space
 .controls select + output { display: none; }
 .controls label.color { grid-template-columns: 6.4em 44px minmax(0, 1fr); }
 .controls label.color output { text-align: left; font-family: var(--mono); }
-.actions { display: flex; gap: var(--space-2); }
+/* Buttons wrap instead of pushing the page wider than the screen. */
+.actions { display: flex; flex-wrap: wrap; gap: var(--space-2); }
 .actions .button { flex: 1; gap: var(--space-2); padding: 0 var(--space-3); }
+.actions copy-button { display: flex; flex: 1; }
+.hero > *, .split > * { min-width: 0; }
 .button svg { width: 20px; height: 20px; fill: currentColor; }
 
 input[type='checkbox'] { justify-self: start; width: 18px; height: 18px; margin: 0; accent-color: var(--accent); cursor: pointer; }
@@ -209,6 +213,21 @@ input[type='range']::-moz-range-thumb { width: 14px; height: 14px; border-radius
 
 .sheet { display: block; width: 100%; height: auto; margin: 0 0 var(--space-4); border-radius: var(--radius-lg); border: var(--border) solid var(--line); }
 #examples small { display: block; color: var(--text-muted); }
+
+/* Anything worth copying carries its own copy button. */
+copy-button { display: contents; }
+copy-button svg, copy-button .button svg { width: 20px; height: 20px; fill: none; stroke: currentColor; stroke-width: 1.5; }
+copy-button[copied] svg { stroke: var(--accent); }
+copy-button .button { gap: var(--space-2); }
+.copy-icon {
+  position: absolute; top: var(--space-3); right: var(--space-3); display: grid; place-items: center;
+  width: var(--control-sm); height: var(--control-sm); padding: 0; border: var(--border) solid var(--line); border-radius: var(--radius);
+  background: var(--surface); color: var(--text-dim); cursor: pointer; transition: color 0.2s, border-color 0.2s;
+}
+.copy-icon:hover { color: var(--text); border-color: var(--button-outline); }
+.snippet { position: relative; }
+.field { display: inline-flex; align-items: center; gap: var(--space-5); padding: var(--space-2) var(--space-2) var(--space-2) var(--space-5); }
+.field code { font-size: var(--step-0); }
 
 .usage { text-align: center; }
 .usage pre { margin: var(--space-6) 0; text-align: left; overflow-x: auto; font: var(--step--1) / 1.7 var(--mono); color: var(--text-dim); }

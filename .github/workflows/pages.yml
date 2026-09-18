@@ -14,6 +14,8 @@ jobs:
       url: ${{ steps.deploy.outputs.page_url }}
     steps:
       - uses: actions/checkout@v4
+      # Stamps the asset links, so a phone never pairs fresh HTML with a cached stylesheet or script.
+      - run: sed -i "s/__BUILD__/${GITHUB_SHA::8}/g" index.html
       - uses: actions/configure-pages@v5
       - uses: actions/upload-pages-artifact@v3
         with:

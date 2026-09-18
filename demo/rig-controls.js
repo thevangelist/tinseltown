@@ -1,6 +1,7 @@
 // <rig-controls for="backdrop-id">: every knob of one <tinseltown-backdrop> in a single well.
 // Renders in the light DOM so the page's one well style applies. Fires "change" after every edit.
 import { PRESETS } from '../src/cookies.js'
+import './copy-button.js'
 
 const kebab = key => key.replace(/[A-Z]/g, c => `-${c.toLowerCase()}`)
 
@@ -64,7 +65,7 @@ class RigControls extends HTMLElement {
       <hr>
       <div class="actions"><button type="button" class="button primary hint" data-action="randomize">${DICE}Randomize</button>
         <button type="button" class="button" data-action="reset">Reset</button>
-        <button type="button" class="button" data-action="copy">Copy tag</button></div>
+        <copy-button label="Copy tag"></copy-button></div>
     </div>`
 
     this.addEventListener('input', ({ target }) => {
@@ -77,6 +78,7 @@ class RigControls extends HTMLElement {
       const button = target.closest('[data-action]')
       if (button) this[button.dataset.action](button)
     })
+    this.querySelector('copy-button').source = () => this.tag
     const drop = this.querySelector('.drop')
     drop.querySelector('input').addEventListener('change', event => this.#useFile(event.target.files[0]))
     for (const type of ['dragover', 'dragleave', 'drop'])
@@ -109,12 +111,6 @@ class RigControls extends HTMLElement {
     }
     this.#target.setAttribute('haze', Math.random() < 0.33 ? pick([0.15, 0.5], 0.02) : 0)
     this.sync()
-  }
-
-  async copy(button) {
-    await navigator.clipboard.writeText(this.tag)
-    button.textContent = 'Copied'
-    setTimeout(() => (button.textContent = 'Copy tag'), 1500)
   }
 
   sync() {
