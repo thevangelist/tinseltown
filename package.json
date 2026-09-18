@@ -16,7 +16,10 @@
   ],
   "homepage": "https://thevangelist.github.io/tinseltown/",
   "bugs": "https://github.com/thevangelist/tinseltown/issues",
-  "repository": "github:thevangelist/tinseltown",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/thevangelist/tinseltown.git"
+  },
   "author": "thevangelist (https://github.com/thevangelist)",
   "license": "MIT",
   "type": "module",
