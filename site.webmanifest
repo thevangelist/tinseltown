@@ -1,7 +1,7 @@
 {
   "name": "Tinseltown",
   "short_name": "Tinseltown",
-  "description": "Dynamic Hollywood-style backdrops for any web page. One HTML tag.",
+  "description": "Hollywood lighting for your website. One HTML tag.",
   "start_url": "./",
   "scope": "./",
   "display": "standalone",

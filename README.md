@@ -2,7 +2,7 @@
 
 # tinseltown
 
-Dynamic Hollywood-style backdrops for any web page. One HTML tag.
+Hollywood lighting for your website. One HTML tag.
 
 [![npm](https://img.shields.io/npm/v/tinseltown.svg?color=cbaf5a)](https://www.npmjs.com/package/tinseltown)
 [![downloads](https://img.shields.io/npm/dm/tinseltown.svg?color=cbaf5a)](https://www.npmjs.com/package/tinseltown)

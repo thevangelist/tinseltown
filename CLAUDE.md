@@ -36,7 +36,7 @@ wall in one WebGL2 fragment shader. Plain ES modules. No build step. No runtime 
 - Code and comments in English. Comments are rare: one line, only for a constraint a reader would miss.
 - No em dashes, emoji or superlatives in docs or page copy. Short sentences. Claim only what the code does today.
   If a feature is not built, the README says so.
-- The tagline is "Dynamic Hollywood-style backdrops for any web page. One HTML tag." It appears in README.md, package.json
+- The tagline is "Hollywood lighting for your website. One HTML tag." It appears in README.md, package.json
   and the hero tagline and meta description of index.html. Change all four together.
 - A new option needs a `SCHEMA` entry with bounds, a README table row and a test. A new preset is covered by
   `test/cookies.test.js` automatically.
