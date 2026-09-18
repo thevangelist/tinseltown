@@ -1,0 +1,31 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>Tinseltown social preview, 1280 by 640</title>
+  <link href="https://fonts.googleapis.com/css2?family=Instrument+Sans:ital,wght@0,400..700;1,400..700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="demo.css">
+  <script type="module" src="../src/tinseltown.js"></script>
+  <style>
+    body { width: 1280px; height: 640px; overflow: hidden; display: grid; place-content: center; justify-items: center; gap: 44px; }
+    .wordmark { width: 980px; filter: blur(0.6px) drop-shadow(0 0 28px rgb(232 184 92 / 0.22)); }
+    .bare > :not(tinseltown-backdrop) { display: none; }
+    p { margin: 0; font-size: 42px; line-height: 1; letter-spacing: -0.01em; color: var(--paper); }
+  </style>
+</head>
+<body>
+  <tinseltown-backdrop preset="blinds-horizontal" wall="#34322e" samples="160" cookie-scale="2.6" aim-x="-0.2"></tinseltown-backdrop>
+  <div class="wordmark" role="img" aria-label="Tinseltown"></div>
+  <p>Dynamic Hollywood-style backdrops for the web</p>
+  <script type="module">
+    // Every query parameter becomes an attribute, so one page renders a card for any look.
+    const backdrop = document.querySelector('tinseltown-backdrop')
+    // ?bare drops the logo and the line, and ?width and ?height size the card.
+    const { bare, width, height, ...look } = Object.fromEntries(new URLSearchParams(location.search))
+    document.body.classList.toggle('bare', bare !== undefined)
+    if (width) document.body.style.width = `${width}px`
+    if (height) document.body.style.height = `${height}px`
+    for (const [name, value] of Object.entries(look)) backdrop.setAttribute(name, value)
+  </script>
+</body>
+</html>

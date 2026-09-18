@@ -1,0 +1,114 @@
+<!doctype html>
+<meta charset="utf-8">
+<title>running</title>
+<body style="margin: 0; height: 100vh; position: relative; isolation: isolate">
+<script type="module">
+import { PRESETS } from '/src/cookies.js'
+import '/src/tinseltown.js'
+
+const TAG = 'tinseltown-backdrop'
+const results = []
+const rejections = []
+addEventListener('unhandledrejection', event => rejections.push(String(event.reason)))
+
+const probe = Object.assign(document.createElement('canvas'), { width: 32, height: 32 }).getContext('2d', { willReadFrequently: true })
+const frame = () => new Promise(resolve => requestAnimationFrame(resolve))
+const mount = attributes => {
+  const el = document.createElement(TAG)
+  for (const [name, value] of Object.entries(attributes)) el.setAttribute(name, value)
+  document.body.append(el)
+  return el
+}
+
+// A frame callback registered after the element's own runs after its draw and before the buffer is cleared.
+async function contrast(el) {
+  el.setAttribute('speed', String(1 + Math.random()))
+  await frame()
+  probe.clearRect(0, 0, 32, 32)
+  probe.drawImage(el.shadowRoot.querySelector('canvas'), 0, 0, 32, 32)
+  const lumas = []
+  const { data } = probe.getImageData(0, 0, 32, 32)
+  for (let i = 0; i < data.length; i += 4) lumas.push(data[i] + data[i + 1] + data[i + 2])
+  return (Math.max(...lumas) - Math.min(...lumas)) / 765
+}
+
+async function rendersLightAndShadow(el, timeout = 4000) {
+  for (const start = performance.now(); performance.now() - start < timeout; ) if ((await contrast(el)) > 0.04) return true
+  return false
+}
+
+async function check(name, run) {
+  try {
+    results.push({ name, ok: (await run()) === true })
+  } catch (error) {
+    results.push({ name, ok: false, error: String(error) })
+  }
+}
+
+for (const preset of Object.keys(PRESETS))
+  await check(`preset ${preset} renders light and shadow`, async () => {
+    const el = mount({ preset })
+    const ok = await rendersLightAndShadow(el)
+    el.remove()
+    return ok
+  })
+
+await check('hostile attributes are clamped, not fatal', async () => {
+  const el = mount({ preset: 'breakup', samples: '100000', elevation: '0', 'light-size': 'abc', 'cookie-scale': '0', edge: 'bogus', resolution: '99', wall: 'not-a-colour' })
+  const { samples, elevation, edge } = el.options
+  const ok = samples === 256 && elevation === 5 && edge === 'repeat' && (await rendersLightAndShadow(el))
+  el.remove()
+  return ok
+})
+
+await check('survives a lost and restored WebGL context', async () => {
+  const el = mount({ preset: 'blinds-horizontal' })
+  if (!(await rendersLightAndShadow(el))) return false
+  const lose = el.shadowRoot.querySelector('canvas').getContext('webgl2').getExtension('WEBGL_lose_context')
+  lose.loseContext()
+  await frame()
+  lose.restoreContext()
+  const ok = await rendersLightAndShadow(el)
+  el.remove()
+  return ok
+})
+
+await check('renders again after being detached and attached', async () => {
+  const el = mount({ preset: 'window' })
+  if (!(await rendersLightAndShadow(el))) return false
+  el.remove()
+  await frame()
+  document.body.append(el)
+  const ok = await rendersLightAndShadow(el)
+  el.remove()
+  return ok
+})
+
+await check('setCookie takes a live canvas and rejects a source without a size', async () => {
+  const el = mount({ 'cookie-distance': '0.5', 'light-size': '0.03' })
+  const cookie = Object.assign(document.createElement('canvas'), { width: 256, height: 256 })
+  const ctx = cookie.getContext('2d')
+  ctx.arc(128, 128, 90, 0, Math.PI * 2)
+  ctx.fill()
+  el.setCookie(cookie, { live: true })
+  let threw = false
+  try {
+    el.setCookie(Object.assign(document.createElement('canvas'), { width: 0, height: 0 }))
+  } catch (error) {
+    threw = error instanceof TypeError
+  }
+  const ok = threw && (await rendersLightAndShadow(el))
+  el.remove()
+  return ok
+})
+
+await check('a missing cookie file warns without an unhandled rejection', async () => {
+  const el = mount({ src: '/smoke/does-not-exist.png' })
+  await new Promise(resolve => setTimeout(resolve, 600))
+  el.remove()
+  return rejections.length === 0
+})
+
+window.smoke = results
+document.title = 'done'
+</script>

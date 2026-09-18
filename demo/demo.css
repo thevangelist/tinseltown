@@ -1,0 +1,239 @@
+:root {
+  --ink: #181818;
+  --paper: #fcf9ed;
+  --mustard: #cbaf5a;
+  --yellow: #e8b85c;
+
+  /* Roles. Text and lines are tints of paper so they stay warm on the lit wall. */
+  --text: var(--paper);
+  --text-dim: rgb(252 249 237 / 0.8);
+  --text-muted: rgb(252 249 237 / 0.58);
+  --surface: rgb(24 24 24 / 0.74);
+  --line: rgb(252 249 237 / 0.16);
+  --accent: var(--yellow);
+  --glow: 232 184 92;
+
+  /* Buttons. Primary is filled yellow. Every other button is a mustard outline that fills on hover. */
+  --button-primary: var(--yellow);
+  --button-primary-hover: #f2c774;
+  --button-primary-text: var(--ink);
+  --button-outline: var(--mustard);
+  --button-outline-hover: rgb(203 175 90 / 0.18);
+  --button-outline-text: var(--paper);
+  --track: rgb(252 249 237 / 0.22);
+
+  /* Type: one family, a minor third scale from 1rem. */
+  --sans: 'Instrument Sans', Helvetica, Arial, sans-serif;
+  --mono: ui-monospace, 'SF Mono', Menlo, Consolas, monospace;
+  --step--1: 0.833rem;
+  --step-0: 1rem;
+  --step-1: 1.2rem;
+  --step-2: 1.44rem;
+  --step-3: 1.728rem;
+  --step-4: 2.074rem;
+  --step-5: 2.488rem;
+  --step-6: 2.986rem;
+  --step-7: 3.583rem;
+
+  /* One height for anything you press, a smaller one for dense rows. One border width everywhere. */
+  --control: 44px;
+  --control-sm: 36px;
+  --border: 2px;
+  --radius: 8px;
+  --radius-lg: 12px;
+  --radius-pill: 9999px;
+
+  --space-1: 4px;
+  --space-2: 8px;
+  --space-3: 12px;
+  --space-4: 16px;
+  --space-5: 24px;
+  --space-6: 32px;
+  --space-7: 48px;
+  --space-8: 72px;
+  --space-9: 120px;
+  color-scheme: dark;
+}
+
+* { box-sizing: border-box; }
+html { background: var(--ink); }
+body { margin: 0; font: var(--step-0) / 1.5 var(--sans); color: var(--text); isolation: isolate; }
+a { color: inherit; }
+button, input, select { font: inherit; }
+h1, h2, h3 { margin: 0; font-weight: 400; text-wrap: balance; }
+h1 { font-size: clamp(var(--step-5), 3.7vw, var(--step-7)); line-height: 1.06; letter-spacing: -0.02em; }
+h2 { font-size: clamp(var(--step-4), 3.2vw, var(--step-6)); line-height: 1.08; letter-spacing: -0.015em; margin-bottom: var(--space-5); }
+h3 { font-size: var(--step-0); font-weight: 600; }
+section p, .facts, .steps { font-size: var(--step-1); line-height: 1.5; }
+small, footer { font-size: var(--step--1); }
+code { font-family: var(--mono); font-size: 0.9em; }
+:focus-visible { outline: var(--border) solid var(--accent); outline-offset: 3px; }
+
+.nav {
+  position: sticky; top: 0; z-index: 1;
+  display: grid; grid-template-columns: 1fr auto 1fr; align-items: center;
+  padding: var(--space-4) var(--space-7);
+}
+/* Blurs what scrolls under the bar, fading out downwards so the bar has no hard edge. */
+.nav::before {
+  content: ''; position: absolute; inset: 0 0 -24px; z-index: -1; pointer-events: none;
+  background: linear-gradient(#000d, #0000); backdrop-filter: blur(14px);
+  -webkit-mask: linear-gradient(#000 55%, #0000); mask: linear-gradient(#000 55%, #0000);
+}
+.nav nav { position: relative; isolation: isolate; display: flex; gap: var(--space-7); }
+.nav nav a {
+  display: inline-flex; align-items: center; height: var(--control);
+  font-size: var(--step-1); text-decoration: none; color: var(--text-dim); transition: color 0.2s;
+}
+.nav nav a:hover, .nav nav a[aria-current] { color: var(--text); }
+/* A small soft lamp under the pointer. It rests on the section in view when the pointer leaves. */
+.blob {
+  position: absolute; z-index: -1; left: 0; top: 50%; width: 140px; height: var(--control); border-radius: 50%;
+  background: radial-gradient(closest-side, rgb(var(--glow) / 0.6), rgb(var(--glow) / 0)); filter: blur(9px);
+  opacity: 0; pointer-events: none; transition: transform 0.18s ease-out, opacity 0.2s;
+}
+.nav-actions { justify-self: end; display: flex; }
+.icon-link {
+  display: grid; place-items: center; width: var(--control); height: var(--control); padding: 0; border: 0; background: none; cursor: pointer;
+  color: var(--text-dim); transition: color 0.2s;
+}
+.icon-link:hover { color: var(--text); }
+.icon-link svg { width: 24px; height: 24px; fill: currentColor; }
+.icon-link.stroke svg { fill: none; stroke: currentColor; stroke-width: 1.5; }
+
+/* The logo is a mask so its colour stays a token. The slight blur softens its edges like projected light. */
+.wordmark {
+  display: block; width: 178px; aspect-ratio: 488.7 / 84.4; background: var(--accent); filter: blur(0.35px);
+  -webkit-mask: url(logo.svg) center / contain no-repeat; mask: url(logo.svg) center / contain no-repeat;
+}
+
+.button {
+  display: inline-flex; align-items: center; justify-content: center; height: var(--control); padding: 0 var(--space-5);
+  border: var(--border) solid var(--button-outline); border-radius: var(--radius);
+  background: none; color: var(--button-outline-text);
+  font-weight: 500; line-height: 1; text-decoration: none; white-space: nowrap; cursor: pointer;
+  transition: background-color 0.2s, border-color 0.2s;
+}
+.button:hover { background: var(--button-outline-hover); }
+.button.primary { border-color: var(--button-primary); background: var(--button-primary); color: var(--button-primary-text); }
+.button.primary:hover { border-color: var(--button-primary-hover); background: var(--button-primary-hover); }
+/* Two seconds in, three waves of light leave the button to say it is there. A click ends them. */
+.button.hint { animation: hint 1.8s ease-out 2s 3; }
+@keyframes hint {
+  0% { box-shadow: 0 0 0 0 rgb(var(--glow) / 0.7), 0 0 0 0 rgb(var(--glow) / 0.35); }
+  100% { box-shadow: 0 0 0 14px rgb(var(--glow) / 0), 0 0 0 30px rgb(var(--glow) / 0); }
+}
+
+/* Distraction-free: everything but the backdrop fades out, so the light can be judged on its own. */
+header, main, footer { transition: opacity 0.4s; }
+.focus header, .focus main, .focus footer { opacity: 0; pointer-events: none; }
+.focus { overflow: hidden; }
+.focus-exit { position: fixed; right: var(--space-5); bottom: var(--space-5); z-index: 2; gap: var(--space-2); background: var(--surface); backdrop-filter: blur(12px); opacity: 0; pointer-events: none; transition: opacity 0.4s; }
+.focus .focus-exit { opacity: 0.55; pointer-events: auto; }
+.focus .focus-exit:hover, .focus .focus-exit:focus-visible { opacity: 1; }
+kbd { padding: 2px 6px; border: 1px solid var(--line); border-radius: 4px; font: var(--step--1) var(--mono); }
+
+section { max-width: 1200px; margin: 0 auto; padding: var(--space-9) var(--space-7); }
+/* Text hangs on the left edge, the square well on the right edge, both centred on one axis. */
+.hero {
+  max-width: 1320px; min-height: calc(100vh - 80px); padding-block: var(--space-7);
+  display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 580px); gap: var(--space-8); align-items: center;
+}
+.lede { max-width: 30em; margin: var(--space-5) 0 0; color: var(--text-dim); }
+
+.chips { display: flex; flex-wrap: wrap; gap: var(--space-2); margin-top: var(--space-6); }
+.chips button {
+  height: var(--control-sm); padding: 0 var(--space-4); border: var(--border) solid var(--line); border-radius: var(--radius-pill);
+  background: var(--surface); backdrop-filter: blur(8px); color: var(--text-dim);
+  font-size: var(--step--1); font-weight: 500; line-height: 1; cursor: pointer; transition: color 0.2s, border-color 0.2s;
+}
+.chips button:hover { color: var(--text); border-color: var(--button-outline); }
+.chips button[aria-pressed='true'] { border-color: var(--button-primary); background: var(--button-primary); color: var(--button-primary-text); }
+
+.split { display: grid; grid-template-columns: 1fr 1fr; gap: var(--space-8); align-items: center; }
+.split p { margin: 0 0 var(--space-4); }
+/* Terms and their meaning share one grid, so every row starts on the same two edges. */
+.facts { display: grid; grid-template-columns: auto 1fr; gap: var(--space-3) var(--space-5); margin: 0; color: var(--text-dim); }
+.facts dt { font-weight: 600; color: var(--text); }
+.facts dd { margin: 0; }
+.steps { margin: 0; padding-left: var(--space-5); display: grid; gap: var(--space-3); color: var(--text-dim); }
+
+/* The one well. Every boxed surface on the page is this and nothing else. */
+.well {
+  margin: 0; padding: var(--space-5); border-radius: var(--radius-lg); border: var(--border) solid var(--line);
+  background: var(--surface); backdrop-filter: blur(12px); box-shadow: 0 10px 48px -16px #000;
+}
+.well hr { margin: var(--space-5) calc(-1 * var(--space-5)); border: 0; border-top: var(--border) solid var(--line); }
+.well h3 { margin-bottom: var(--space-2); }
+.well h3:not(:first-child) { margin-top: var(--space-4); }
+
+.controls { display: grid; grid-template-columns: 1fr 1fr; gap: 0 var(--space-6); }
+.controls label {
+  display: grid; grid-template-columns: 6.4em minmax(0, 1fr) 3.2em; align-items: center; gap: var(--space-2);
+  min-height: var(--control-sm); font-size: var(--step--1); color: var(--text-dim);
+}
+.controls output { text-align: right; font-variant-numeric: tabular-nums; color: var(--text-muted); overflow: hidden; }
+.controls select {
+  grid-column: span 2; height: 28px; padding: 0 var(--space-2); border: var(--border) solid var(--line); border-radius: var(--radius);
+  background: none; color: var(--text);
+}
+.controls select + output { display: none; }
+.controls label.color { grid-template-columns: 6.4em 44px minmax(0, 1fr); }
+.controls label.color output { text-align: left; font-family: var(--mono); }
+.actions { display: flex; gap: var(--space-2); }
+.actions .button { flex: 1; gap: var(--space-2); padding: 0 var(--space-3); }
+.button svg { width: 20px; height: 20px; fill: currentColor; }
+
+input[type='checkbox'] { justify-self: start; width: 18px; height: 18px; margin: 0; accent-color: var(--accent); cursor: pointer; }
+input[type='color'] {
+  appearance: none; width: 100%; height: 24px; padding: 0; border: var(--border) solid var(--line); border-radius: var(--radius);
+  background: none; cursor: pointer; overflow: hidden;
+}
+input[type='color']::-webkit-color-swatch-wrapper { padding: 0; }
+input[type='color']::-webkit-color-swatch { border: 0; }
+input[type='color']::-moz-color-swatch { border: 0; }
+input[type='range'] { appearance: none; width: 100%; height: var(--control-sm); margin: 0; background: none; cursor: pointer; }
+input[type='range']::-webkit-slider-runnable-track { height: 4px; border-radius: 2px; background: var(--track); }
+input[type='range']::-moz-range-track { height: 4px; border-radius: 2px; background: var(--track); }
+input[type='range']::-webkit-slider-thumb {
+  appearance: none; width: 18px; height: 18px; margin-top: -7px; border-radius: 50%;
+  background: var(--accent); border: var(--border) solid var(--ink);
+}
+input[type='range']::-moz-range-thumb { width: 14px; height: 14px; border-radius: 50%; background: var(--accent); border: var(--border) solid var(--ink); }
+
+.drop { display: grid; grid-template-columns: 1fr auto; gap: var(--space-5); align-items: center; border-radius: var(--radius); cursor: pointer; }
+.drop.over { outline: var(--border) solid var(--accent); outline-offset: var(--space-3); }
+.drop small { display: block; color: var(--text-muted); line-height: 1.5; }
+
+/* Bare renders, nothing on top. */
+.gallery { display: grid; grid-template-columns: repeat(3, 1fr); gap: var(--space-5); padding-block: 0; }
+.gallery div { position: relative; isolation: isolate; aspect-ratio: 3 / 2; overflow: hidden; border-radius: var(--radius-lg); border: var(--border) solid var(--line); }
+
+.usage { text-align: center; }
+.usage pre { margin: var(--space-6) 0; text-align: left; overflow-x: auto; font: var(--step--1) / 1.7 var(--mono); color: var(--text-dim); }
+
+/* The page ends by fading to black, like the end of a reel. */
+footer { padding: var(--space-9) 0 var(--space-7); line-height: 1.7; color: var(--text-muted); background: linear-gradient(#0000, #000 72%); }
+/* Four short columns on the hero's two edges. */
+footer > div { max-width: 1320px; margin: 0 auto; padding: 0 var(--space-7); display: grid; grid-template-columns: repeat(4, 1fr); gap: var(--space-6); }
+footer h3 { font-size: inherit; color: var(--text-dim); }
+footer h3::before { content: '✦'; margin-right: 0.5em; color: var(--accent); }
+footer p { margin: var(--space-1) 0 0; }
+
+@media (max-width: 1000px) {
+  .nav { padding: var(--space-3) var(--space-4); grid-template-columns: 1fr auto; }
+  .nav nav { display: none; }
+  section { padding: var(--space-8) var(--space-4); }
+  .split, .hero, .controls, .gallery { grid-template-columns: 1fr; gap: var(--space-6); }
+  footer > div { grid-template-columns: 1fr 1fr; }
+  /* Randomize leads on a phone: it is the fastest way to see what the rig can do. */
+  rig-controls .well { display: grid; }
+  rig-controls .actions { order: -2; }
+  rig-controls hr:last-of-type { order: -1; }
+  .drop { grid-template-columns: 1fr; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .blob { transition: opacity 0.2s; }
+  .button.hint { animation: none; }
+}

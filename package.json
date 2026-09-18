@@ -1,0 +1,39 @@
+{
+  "name": "tinseltown",
+  "version": "0.1.0",
+  "description": "Dynamic Hollywood-style backdrops for any web page. One HTML tag.",
+  "keywords": [
+    "backdrop",
+    "background",
+    "shadow",
+    "light",
+    "gobo",
+    "cucoloris",
+    "film-noir",
+    "webgl",
+    "web-component",
+    "custom-element"
+  ],
+  "homepage": "https://thevangelist.github.io/tinseltown/",
+  "bugs": "https://github.com/thevangelist/tinseltown/issues",
+  "repository": "github:thevangelist/tinseltown",
+  "author": "thevangelist (https://github.com/thevangelist)",
+  "license": "MIT",
+  "type": "module",
+  "exports": {
+    ".": "./src/tinseltown.js",
+    "./cookies": "./src/cookies.js",
+    "./options": "./src/options.js"
+  },
+  "files": [
+    "src"
+  ],
+  "scripts": {
+    "dev": "vite",
+    "test": "node --test",
+    "test:browser": "node smoke/run.mjs"
+  },
+  "devDependencies": {
+    "vite": "^7.0.0"
+  }
+}
