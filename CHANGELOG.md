@@ -1,5 +1,18 @@
 # Changelog
 
+## 0.2.0, 2026-09-18
+
+### Added
+
+- Colour cookies. Transmission is per channel, so a slide, a gel or a photo tints the light instead of only dimming it.
+- A cookie that is not a preset repeats mirrored, so a photo covers any frame without a visible seam.
+- Demo: an Examples section, a distraction-free mode on the H key, link previews, a web manifest, icons and
+  structured data.
+
+### Changed
+
+- A coloured cookie used to count by its brightness alone. It now tints the light. Black and alpha cookies look the same.
+
 ## 0.1.0, 2026-09-18
 
 ### Added
@@ -11,7 +24,6 @@
   `halftone`, `breakup`, `iris`, `clouds`, `leaves`, `palm`, `palm-tree`, `ceiling-fan`, `train`. Each carries rig defaults tuned so its smallest shape stays legible.
 - Custom cookies from any black and alpha image, video or canvas, by `src` or `setCookie()`. One transmission rule
   covers black on transparent and white on black, so no conversion step is needed.
-- Colour cookies. Transmission is per channel, so a slide, a gel or a photo tints the light. Photos repeat mirrored.
 - `cookie-blur` and `threshold`, so a noisy phone photo of a cut-out becomes a clean mask.
 - `layers`: up to three copies of the cookie at increasing depth. One sharp layer and one soft layer read as depth.
 - `haze`: a drifting smoke volume that makes the beams visible.
@@ -24,8 +36,7 @@
 - `motion`: `sway`, `drift`, `spin`, `breathe`, `flicker`.
 - Render on demand. A static rig draws once. Animated rigs stop offscreen and hold still under
   `prefers-reduced-motion`.
-- A demo landing page that uses the element as its own backdrop, with a controls component, a cookie drop zone and a
-  distraction-free mode on the H key.
+- A demo landing page that uses the element as its own backdrop, with a controls component and a cookie drop zone.
 
 - Framing that works like `background-size: cover`. World scale was tied to element height, so wide screens ran out
   of lit wall. Now every aspect shows a part of one composed frame.

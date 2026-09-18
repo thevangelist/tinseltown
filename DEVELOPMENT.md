@@ -63,5 +63,6 @@ checking and no linter yet. Both come after the first release.
 
 ## Release
 
-Bump the version, date the CHANGELOG entry, commit `chore: release x.y.z`, run both test suites, `npm publish`, tag
+Bump the version in `package.json`, `package-lock.json`, the JSON-LD block of `index.html` and the CDN lines in
+`README.md` and `demo/demo.js`. Date the CHANGELOG entry, commit `chore: release x.y.z`, run both test suites, `npm publish`, tag
 `vx.y.z`, push with tags. Then load the published file from the CDN in a blank page and confirm it renders.

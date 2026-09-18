@@ -3,12 +3,28 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Tinseltown: dynamic Hollywood-style backdrops for the web</title>
-  <meta name="description" content="Dynamic Hollywood-style backdrops for any web page. One HTML tag.">
-  <meta property="og:title" content="Tinseltown">
+  <title>Tinseltown: Hollywood-style light and shadow backdrops</title>
+  <meta name="description" content="Tinseltown is a free, zero-dependency web component that casts real light and shadow behind your page: venetian blinds, window light, leaves and film noir looks. One HTML tag.">
+  <link rel="canonical" href="https://thevangelist.github.io/tinseltown/">
+  <meta name="theme-color" content="#181818">
+  <meta name="color-scheme" content="dark">
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="Tinseltown">
+  <meta property="og:url" content="https://thevangelist.github.io/tinseltown/">
+  <meta property="og:title" content="Tinseltown: Hollywood-style light and shadow backdrops">
   <meta property="og:description" content="Dynamic Hollywood-style backdrops for any web page. One HTML tag.">
   <meta property="og:image" content="https://thevangelist.github.io/tinseltown/docs/social.png">
+  <meta property="og:image:width" content="1280">
+  <meta property="og:image:height" content="640">
+  <meta property="og:image:alt" content="The Tinseltown logo over light cast through venetian blinds">
   <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Tinseltown: Hollywood-style light and shadow backdrops">
+  <meta name="twitter:description" content="Dynamic Hollywood-style backdrops for any web page. One HTML tag.">
+  <meta name="twitter:image" content="https://thevangelist.github.io/tinseltown/docs/social.png">
+  <script type="application/ld+json">{"@context": "https://schema.org", "@type": "SoftwareApplication", "name": "Tinseltown", "description": "Dynamic Hollywood-style backdrops for any web page. One HTML tag.", "applicationCategory": "DeveloperApplication", "operatingSystem": "Any, in a web browser with WebGL2", "softwareVersion": "0.2.0", "url": "https://thevangelist.github.io/tinseltown/", "downloadUrl": "https://www.npmjs.com/package/tinseltown", "codeRepository": "https://github.com/thevangelist/tinseltown", "license": "https://opensource.org/licenses/MIT", "image": "https://thevangelist.github.io/tinseltown/docs/social.png", "offers": {"@type": "Offer", "price": "0", "priceCurrency": "USD"}, "author": {"@type": "Person", "name": "thevangelist", "url": "https://github.com/thevangelist"}}</script>
+  <link rel="manifest" href="site.webmanifest">
+  <link rel="apple-touch-icon" href="demo/apple-touch-icon.png">
+  <link rel="sitemap" type="application/xml" href="sitemap.xml">
   <link rel="icon" href="demo/favicon.svg" type="image/svg+xml">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -26,6 +42,7 @@
       <a href="#rig">The rig</a>
       <a href="#cookie">Your cookie</a>
       <a href="#how">How it works</a>
+      <a href="#examples">Examples</a>
       <a href="#usage">Usage</a>
     </nav>
     <div class="nav-actions">
@@ -84,10 +101,17 @@
       </ol>
     </section>
 
-    <section class="gallery" aria-label="Examples">
-      <div><tinseltown-backdrop preset="bars" elevation="28" haze="0.3"></tinseltown-backdrop></div>
-      <div><tinseltown-backdrop preset="arched-window" haze="0.35"></tinseltown-backdrop></div>
-      <div><tinseltown-backdrop preset="leaves" light-color="#a9c1ff" surface="plaster"></tinseltown-backdrop></div>
+    <section id="examples">
+      <h2>Examples</h2>
+      <div class="gallery">
+        <div><tinseltown-backdrop preset="bars" elevation="28" haze="0.3"></tinseltown-backdrop></div>
+        <div><tinseltown-backdrop preset="arched-window" haze="0.35"></tinseltown-backdrop></div>
+        <div><tinseltown-backdrop preset="leaves" light-color="#a9c1ff" surface="plaster"></tinseltown-backdrop></div>
+      </div>
+      <img class="sheet" src="docs/examples.jpg" width="2448" height="1860" loading="lazy"
+        alt="Twelve renders: blinds, french doors, a photo used as a colour slide, a fence, halftone, an iris, clouds, leaves, palm fronds and a passing train">
+      <small>The three on top are live. The twelve below are renders: eleven presets under different rigs, and one photo used
+        as the cookie. Photo by Mikhail Nilov on Pexels.</small>
     </section>
 
     <section id="usage" class="usage">

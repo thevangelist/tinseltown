@@ -8,7 +8,7 @@ const snippet = document.querySelector('#snippet')
 
 function show() {
   for (const chip of chips.children) chip.setAttribute('aria-pressed', chip.dataset.preset === backdrop.getAttribute('preset'))
-  snippet.textContent = `<script type="module" src="https://cdn.jsdelivr.net/npm/tinseltown@0.1/src/tinseltown.js"></script>\n\n${controls.tag}`
+  snippet.textContent = `<script type="module" src="https://cdn.jsdelivr.net/npm/tinseltown@0.2/src/tinseltown.js"></script>\n\n${controls.tag}`
 }
 
 for (const name of Object.keys(PRESETS)) {

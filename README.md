@@ -4,26 +4,22 @@
 
 Dynamic Hollywood-style backdrops for any web page. One HTML tag.
 
-Not the flicker library. That one is [Tinseltown.js](https://github.com/Antrikshy/Tinseltown.js), hacker-movie page-load
-effects. This one casts light and shadow.
-
 [![npm](https://img.shields.io/npm/v/tinseltown.svg?color=cbaf5a)](https://www.npmjs.com/package/tinseltown)
 [![downloads](https://img.shields.io/npm/dm/tinseltown.svg?color=cbaf5a)](https://www.npmjs.com/package/tinseltown)
 [![License: MIT](https://img.shields.io/badge/license-MIT-cbaf5a.svg)](LICENSE)
 
 **[Live demo](https://thevangelist.github.io/tinseltown/)**
 
-Film noir made venetian blinds famous with one lamp and one cut-out board. The web fakes that look with blurred PNGs
-and looped videos. Tinseltown builds the real rig behind the page: a lamp, a cookie and a wall, traced on the GPU for every pixel. A cookie, short for cucoloris, is the
-cut-out a grip puts in front of a lamp to break up the light. Move the lamp and the shadows stretch.
-Pull the cookie off the wall and they soften. No dependencies, no build step.
+The web fakes window light with blurred PNGs and looped videos. Tinseltown builds the rig instead: a lamp, a cookie
+and a wall, traced on the GPU for every pixel. A cookie, short for cucoloris, is the cut-out a grip puts in front of a
+lamp. No dependencies, no build step.
 
 ## Install
 
 Without installing anything:
 
 ```html
-<script type="module" src="https://cdn.jsdelivr.net/npm/tinseltown@0.1/src/tinseltown.js"></script>
+<script type="module" src="https://cdn.jsdelivr.net/npm/tinseltown@0.2/src/tinseltown.js"></script>
 ```
 
 With a bundler:
@@ -174,6 +170,11 @@ Eleven presets under different rigs, and one photo used as the cookie. Photo by 
 `npm install`, `npm run dev`, `npm test`, `npm run test:browser`. See [DEVELOPMENT.md](DEVELOPMENT.md) and [CONTRIBUTING.md](CONTRIBUTING.md).
 
 The demo page uses the element as its own backdrop. Its design tokens live at the top of `demo/demo.css`.
+
+## Same name, other project
+
+For hacker-movie page-load effects, see [Tinseltown.js](https://github.com/Antrikshy/Tinseltown.js) by Antrikshy.
+The two share a name and nothing else.
 
 ## License
 

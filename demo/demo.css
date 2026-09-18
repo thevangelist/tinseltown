@@ -206,8 +206,11 @@ input[type='range']::-moz-range-thumb { width: 14px; height: 14px; border-radius
 .drop small { display: block; color: var(--text-muted); line-height: 1.5; }
 
 /* Bare renders, nothing on top. */
-.gallery { display: grid; grid-template-columns: repeat(3, 1fr); gap: var(--space-5); padding-block: 0; }
+.gallery { display: grid; grid-template-columns: repeat(3, 1fr); gap: var(--space-5); }
 .gallery div { position: relative; isolation: isolate; aspect-ratio: 3 / 2; overflow: hidden; border-radius: var(--radius-lg); border: var(--border) solid var(--line); }
+
+.sheet { display: block; width: 100%; height: auto; margin: var(--space-5) 0 var(--space-4); border-radius: var(--radius-lg); border: var(--border) solid var(--line); }
+#examples small { display: block; color: var(--text-muted); }
 
 .usage { text-align: center; }
 .usage pre { margin: var(--space-6) 0; text-align: left; overflow-x: auto; font: var(--step--1) / 1.7 var(--mono); color: var(--text-dim); }
