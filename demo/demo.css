@@ -219,14 +219,17 @@ copy-button { display: contents; }
 copy-button svg, copy-button .button svg { width: 20px; height: 20px; fill: none; stroke: currentColor; stroke-width: 1.5; }
 copy-button[copied] svg { stroke: var(--accent); }
 copy-button .button { gap: var(--space-2); }
+/* The copy icon: one small square, in the corner of a code block or at the end of a field. */
 .copy-icon {
-  position: absolute; top: var(--space-3); right: var(--space-3); display: grid; place-items: center;
-  width: var(--control-sm); height: var(--control-sm); padding: 0; border: var(--border) solid var(--line); border-radius: var(--radius);
-  background: var(--surface); color: var(--text-dim); cursor: pointer; transition: color 0.2s, border-color 0.2s;
+  flex: none; display: grid; place-items: center; width: var(--control-sm); height: var(--control-sm); padding: 0;
+  border: var(--border) solid var(--line); border-radius: var(--radius); background: var(--ink); color: var(--text-dim);
+  cursor: pointer; transition: color 0.2s, border-color 0.2s;
 }
 .copy-icon:hover { color: var(--text); border-color: var(--button-outline); }
 .snippet { position: relative; }
-.field { display: inline-flex; align-items: center; gap: var(--space-5); padding: var(--space-2) var(--space-2) var(--space-2) var(--space-5); }
+.snippet .copy-icon { position: absolute; top: var(--space-3); right: var(--space-3); }
+.snippet pre { padding-right: calc(var(--control-sm) + var(--space-6)); }
+.field { display: inline-flex; align-items: center; gap: var(--space-5); padding: var(--space-3) var(--space-3) var(--space-3) var(--space-5); }
 .field code { font-size: var(--step-0); }
 
 .usage { text-align: center; }

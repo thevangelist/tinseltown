@@ -19,13 +19,13 @@ lamp. No dependencies, no build step.
 Without installing anything:
 
 ```html
-<script type="module" src="https://cdn.jsdelivr.net/npm/tinseltown@0.2/src/tinseltown.js"></script>
+<script type="module" src="https://cdn.jsdelivr.net/npm/tinseltown@latest/src/tinseltown.js"></script>
 ```
 
 With a bundler:
 
 ```sh
-npm install tinseltown
+npm install tinseltown@latest
 ```
 
 ```js
