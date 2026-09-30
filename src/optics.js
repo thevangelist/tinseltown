@@ -22,14 +22,14 @@ export const transmission = (r, g, b, a) => [r, g, b].map(c => 1 - a * (1 - c))
 
 export const srgbToLinear = c => (c <= 0.04045 ? c / 12.92 : ((c + 0.055) / 1.055) ** 2.4)
 
-// Share of the frame a typical preset lights at full strength. The rest gets only ambient. Fitted to the presets.
+// Share of the frame lit at full strength when the cookie is not a preset. The rest gets only ambient.
 export const LIT_SHARE = 0.65
 
 const finish = c => ((c * (2.51 * c + 0.03)) / (c * (2.43 * c + 0.59) + 0.14)) ** (1 / 2.2) * 255
 
 // A guess at the picture's mean colour before any frame renders, with the shader's lighting and tone map.
-export function meanTone(wall, lamp, ambient) {
-  const tone = wall.map((w, i) => LIT_SHARE * finish(w * (ambient + lamp[i])) + (1 - LIT_SHARE) * finish(w * ambient))
+export function meanTone(wall, lamp, ambient, lit = LIT_SHARE) {
+  const tone = wall.map((w, i) => lit * finish(w * (ambient + lamp[i])) + (1 - lit) * finish(w * ambient))
   return `rgb(${tone.map(Math.round).join(' ')})`
 }
 

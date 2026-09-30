@@ -151,6 +151,7 @@ export class TinseltownBackdrop extends (globalThis.HTMLElement ?? class {}) {
   }
 
   attributeChangedCallback(name, previous, value) {
+    if (previous !== value && this.shadowRoot) this.#estimateTone()
     if (!this.#gl || previous === value) return
     if (name === 'preset' || name === 'src') this.#loadCookie()
     else this.#invalidate()
@@ -287,7 +288,6 @@ export class TinseltownBackdrop extends (globalThis.HTMLElement ?? class {}) {
 
   // Something changed: start refining from scratch.
   #invalidate = () => {
-    this.#estimateTone()
     this.#refined = 0
     this.#schedule()
   }
@@ -401,7 +401,8 @@ export class TinseltownBackdrop extends (globalThis.HTMLElement ?? class {}) {
 
   #estimateTone() {
     const o = this.options
-    this.#paintTone(meanTone(this.#wall(o), this.#lamp(o), o.ambient))
+    const preset = this.hasAttribute('src') ? null : PRESETS[this.getAttribute('preset')] ?? PRESETS.breakup
+    this.#paintTone(meanTone(this.#wall(o), this.#lamp(o), o.ambient, preset?.lit))
   }
 
   #paintTone(tone) {
