@@ -21,6 +21,10 @@ for (const [name, preset] of Object.entries(PRESETS)) {
     for (const [key, value] of Object.entries(preset.rig)) assert.equal(resolved[key], value, key)
   })
 
+  test(`${name}: a lit share for the background estimate`, () => {
+    assert.ok(preset.lit > 0 && preset.lit <= 1)
+  })
+
   test(`${name}: the cookie plane meets the wall outside the frame, so no bare corner shows`, () => {
     const o = resolveOptions(preset.rig)
     const azimuth = (o.azimuth * Math.PI) / 180

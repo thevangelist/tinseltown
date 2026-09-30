@@ -153,7 +153,8 @@ costs nothing. Animated rigs stop when offscreen. Under
 
 ## Limitations
 
-- WebGL2 only. Without it the element shows a flat dark background.
+- WebGL2 only. Without it the element shows a flat background, estimated from the wall and the lamp. Once a picture
+  has rendered, that background takes its measured mean colour.
 - Tuned on Apple Silicon. A governor lowers the render scale when frames run long, and phones start a step down.
   On a draining battery below 30 percent the rig renders small and holds still. That needs the Battery Status API,
   which only Chromium browsers have. Lower `samples` and `resolution` yourself for a heavy page.

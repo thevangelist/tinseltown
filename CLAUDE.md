@@ -10,7 +10,7 @@ wall in one WebGL2 fragment shader. Plain ES modules. No build step. No runtime 
 - `element.options`: resolved values. Order is defaults, then preset rig, then attributes. `resolveOptions()`
   clamps every number and rejects unknown enum values and motion tokens. Nothing unvalidated reaches a uniform.
 - `element.setCookie(source, { live })`: image, video, canvas or ImageBitmap. `live` re-uploads every frame.
-- `PRESETS` in `src/cookies.js`: `{ svg(), rig }` per name.
+- `PRESETS` in `src/cookies.js`: `{ svg(), rig, lit }` per name. `lit` is measured, see the comment above `PRESETS`.
 
 ## Internals
 
