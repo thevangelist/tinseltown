@@ -102,6 +102,15 @@ await check('setCookie takes a live canvas and rejects a source without a size',
   return ok
 })
 
+await check('the host background starts from an estimate and settles on the measured mean', async () => {
+  const el = mount({ preset: 'iris', wall: '#e8e4dc' })
+  const estimate = getComputedStyle(el).backgroundColor
+  for (let i = 0; i < 60; i++) await frame()
+  const measured = getComputedStyle(el).backgroundColor
+  el.remove()
+  return estimate !== 'rgb(28, 26, 23)' && measured !== estimate
+})
+
 await check('a missing cookie file warns without an unhandled rejection', async () => {
   const el = mount({ src: '/smoke/does-not-exist.png' })
   await new Promise(resolve => setTimeout(resolve, 600))

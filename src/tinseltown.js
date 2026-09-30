@@ -1,5 +1,5 @@
 import { PRESETS } from './cookies.js'
-import { kelvinToRgb, rig, srgbToLinear, viewExtent } from './optics.js'
+import { kelvinToRgb, meanTone, rig, srgbToLinear, viewExtent } from './optics.js'
 import { SCHEMA, resolveOptions } from './options.js'
 import { FRAG, RESOLVE, VERT } from './shader.js'
 
@@ -20,6 +20,8 @@ const FADE_ALPHA = 0.4
 const ECO_BATTERY_LEVEL = 0.3
 const ECO_SAMPLES = 16
 const ECO_REFINE_FRAMES = 6
+// A moving rig re-reads its mean colour for the host background this often.
+const TONE_FRAMES = 120
 const VIDEO = /\.(mp4|webm|mov|m4v)(\?|#|$)/i
 const kebab = key => key.replace(/[A-Z]/g, c => `-${c.toLowerCase()}`)
 const reducedMotion = globalThis.matchMedia?.('(prefers-reduced-motion: reduce)')
@@ -98,6 +100,7 @@ export class TinseltownBackdrop extends (globalThis.HTMLElement ?? class {}) {
   #frame = 0
   #loads = 0
   #observers = []
+  #ticks = 0
 
   get options() {
     const attributes = {}
@@ -110,6 +113,7 @@ export class TinseltownBackdrop extends (globalThis.HTMLElement ?? class {}) {
     if (!this.hasAttribute('aria-hidden')) this.setAttribute('aria-hidden', 'true')
     const root = this.shadowRoot ?? this.attachShadow({ mode: 'open' })
     root.innerHTML = `${STYLE}<canvas></canvas>`
+    this.#estimateTone()
     this.#canvas = root.querySelector('canvas')
     this.#canvas.addEventListener('webglcontextlost', this.#onContextLost)
     this.#canvas.addEventListener('webglcontextrestored', this.#onContextRestored)
@@ -283,6 +287,7 @@ export class TinseltownBackdrop extends (globalThis.HTMLElement ?? class {}) {
 
   // Something changed: start refining from scratch.
   #invalidate = () => {
+    this.#estimateTone()
     this.#refined = 0
     this.#schedule()
   }
@@ -357,9 +362,8 @@ export class TinseltownBackdrop extends (globalThis.HTMLElement ?? class {}) {
     gl.uniform3fv(this.#uniform('uN'), flat('n'))
     gl.uniform3fv(this.#uniform('uU'), flat('u'))
     gl.uniform3fv(this.#uniform('uV'), flat('v'))
-    gl.uniform3fv(this.#uniform('uWall'), cssColorToLinear(o.wall) ?? cssColorToLinear(SCHEMA.wall.default))
-    const lamp = cssColorToLinear(o.lightColor) ?? kelvinToRgb(o.colorTemp)
-    gl.uniform3fv(this.#uniform('uLightColor'), lamp.map(c => c * o.intensity * r.gain))
+    gl.uniform3fv(this.#uniform('uWall'), this.#wall(o))
+    gl.uniform3fv(this.#uniform('uLightColor'), this.#lamp(o).map(c => c * r.gain))
     gl.uniform1f(this.#uniform('uAmbient'), o.ambient)
     gl.uniform1f(this.#uniform('uThreshold'), o.threshold)
     gl.uniform1f(this.#uniform('uBlur'), o.cookieBlur)
@@ -376,11 +380,37 @@ export class TinseltownBackdrop extends (globalThis.HTMLElement ?? class {}) {
       this.#refined++
       this.#history = true
     }
-    if (animated || (accumulate && this.#refined < (eco ? ECO_REFINE_FRAMES : REFINE_FRAMES))) {
+    const more = animated || (accumulate && this.#refined < (eco ? ECO_REFINE_FRAMES : REFINE_FRAMES))
+    if (!more || (animated && ++this.#ticks % TONE_FRAMES === 0)) this.#matchTone()
+    if (more) {
       this.#chained = true
       this.#schedule()
     }
   }
+
+  // The host background takes the picture's mean colour, so a lost context or a late first frame shows no jump.
+  // Read in the frame it was drawn: without preserveDrawingBuffer the canvas is cleared after compositing.
+  #matchTone() {
+    const probe = new OffscreenCanvas(8, 8).getContext('2d')
+    probe.drawImage(this.#canvas, 0, 0, 8, 8)
+    const { data } = probe.getImageData(0, 0, 8, 8)
+    const sum = [0, 0, 0]
+    for (let i = 0; i < data.length; i++) if (i % 4 < 3) sum[i % 4] += data[i]
+    this.#paintTone(`rgb(${sum.map(c => Math.round(c / 64)).join(' ')})`)
+  }
+
+  #estimateTone() {
+    const o = this.options
+    this.#paintTone(meanTone(this.#wall(o), this.#lamp(o), o.ambient))
+  }
+
+  #paintTone(tone) {
+    const host = this.shadowRoot?.querySelector('style').sheet?.cssRules[0]
+    if (host) host.style.background = tone
+  }
+
+  #wall = o => cssColorToLinear(o.wall) ?? cssColorToLinear(SCHEMA.wall.default)
+  #lamp = o => (cssColorToLinear(o.lightColor) ?? kelvinToRgb(o.colorTemp)).map(c => c * o.intensity)
 }
 
 if (globalThis.customElements && !customElements.get(TAG)) customElements.define(TAG, TinseltownBackdrop)

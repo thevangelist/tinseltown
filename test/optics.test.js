@@ -1,6 +1,6 @@
 import assert from 'node:assert/strict'
 import test from 'node:test'
-import { kelvinToRgb, motionAt, project, rig, transmission } from '../src/optics.js'
+import { kelvinToRgb, meanTone, motionAt, project, rig, transmission } from '../src/optics.js'
 import { resolveOptions } from '../src/options.js'
 
 const OPTIONS = { ...resolveOptions(), cookieAspect: 1 }
@@ -82,4 +82,14 @@ test('framing covers like background-size: cover and never leaves the frame', as
     assert.ok(x <= FRAME[0] + 1e-9 && y <= FRAME[1] + 1e-9)
     assert.ok(x === FRAME[0] || y === FRAME[1])
   }
+})
+
+test('meanTone: a black wall stays black, more light is brighter, the wall colour carries through', () => {
+  const channels = tone => tone.match(/\d+/g).map(Number)
+  assert.equal(meanTone([0, 0, 0], [2, 2, 2], 0.1), 'rgb(0 0 0)')
+  const [dim] = channels(meanTone([0.5, 0.5, 0.5], [1, 1, 1], 0.1))
+  const [bright] = channels(meanTone([0.5, 0.5, 0.5], [3, 3, 3], 0.1))
+  assert.ok(bright > dim)
+  const [r, g, b] = channels(meanTone([0.6, 0.1, 0.02], [2, 2, 2], 0.1))
+  assert.ok(r > g && g > b)
 })

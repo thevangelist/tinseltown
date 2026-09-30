@@ -1,5 +1,13 @@
 # Changelog
 
+## Unreleased
+
+### Changed
+
+- The flat background behind the canvas was always dark. It now starts from an estimate made from the wall, the lamp
+  and the ambient light, and takes the measured mean colour once the picture settles. A light wall no longer opens
+  on a dark patch.
+
 ## 0.3.0, 2026-09-18
 
 ### Fixed
